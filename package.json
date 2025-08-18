@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "author": "afan <bili_afan@163.com>",
+  "scripts": {
+    "dev": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi setup",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "@umijs/plugins": "^4.4.12",
+    "antd": "^5.27.0",
+    "qs": "^6.14.0",
+    "styled-components": "^6.1.19",
+    "umi": "^4.4.12"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.33",
+    "@types/react-dom": "^18.0.11",
+    "typescript": "^5.0.3"
+  }
+}
