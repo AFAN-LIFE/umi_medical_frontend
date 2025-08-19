@@ -1,7 +1,7 @@
 const CountPage = () => {
   return (
     <div>
-      <p> this is a counter </p>
+      <p> 计数器 </p>
     </div>
   );
 };
