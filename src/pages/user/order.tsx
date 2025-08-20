@@ -1,28 +1,34 @@
-import { useNavigate, Navigate } from "umi";
+import { useNavigate, Navigate, history} from "umi";
 import { Button } from "antd";
 
 
 const OrderPage = () => {
   // 使用useNavigate获取navigate函数
-  const navigate = useNavigate();
   const fn = () => {
-    // console.log("fn...");
-
     // 方式1 直接跳转到个人信息页面
-    // navigate('/user/profile'); 
+    // navigate('/user/profile');   
 
-
-    // 方式2 使用对象形式跳转，并通过问号传参
-    // navigate({
+    // 方式2 问号传参，获取这个参数需要在个人信息页面使用useSearchParams或者location.state来获取，同navigate就不演示了
+    // history.push({
     //   pathname: '/user/profile',
     //   search: '?name=afan&age=18',
-    // })
+    // });
 
-    // 方式3 使用Navigate组件跳转，并通过隐式传参
-    // ！！！隐式传参的参数，在地址上看不到，且刷新不会丢失！！！
-    navigate('/user/profile',{
-      state: {name: 'afan', age: 18}  // 通过state传参，刷新就没了
-    })
+    // 方式3 query传参，没什么特别的
+    // 在config/config.ts中配置historyWithQuery: {}，开启配置
+    history.push({
+      pathname: '/user/profile',
+      query: {
+        name: 'afan',
+        age: 18,
+      }
+    });
+
+    // 方式4 隐式传参，不需要写state了，获取方式参考navigate的隐式传参获取方式
+    // React V6中隐式传参目标刷新后不会丢失，V5中会丢失
+    history.push('/user/profile', {
+      name: 'afan', age: 18
+    });
   }
   return (
     <div>
