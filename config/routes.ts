@@ -5,6 +5,11 @@ const routes =  [
         titie: "首页"
     },
     { 
+        path: "/count/:name/:age", // 动态路由，下面需要再配一遍/count否则404，访问：http://localhost:3000/count/afan/18
+        component: "count",     
+        titie: "计数器"
+    },
+    { 
         path: "/count", 
         component: "count", 
         titie: "计数器"
