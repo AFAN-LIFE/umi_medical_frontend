@@ -22,6 +22,11 @@ pnpm dlx create-umi@latest
 https://favicon.io/favicon-converter/
 
 # commit说明
+- 250820 路由跳转方式：
+    - 路径传参和接受参数
+    - navigate跳转和显示隐式传参：其中多种接受参数的方法都在这个里面
+    - history传参：有一个到config/config.ts中配置historyWithQuery的操作，感觉没必要，优先还是navigate的方法把
+    
 - 250820 配置式路由配置，以及loading组件优化
     - 先新建config/routes.ts在里面写路由表
     - 开启externals，修改src/loading.tsx

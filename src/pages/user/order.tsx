@@ -16,13 +16,13 @@ const OrderPage = () => {
 
     // 方式3 query传参，没什么特别的
     // 在config/config.ts中配置historyWithQuery: {}，开启配置
-    history.push({
-      pathname: '/user/profile',
-      query: {
-        name: 'afan',
-        age: 18,
-      }
-    });
+    // history.push({
+    //   pathname: '/user/profile',
+    //   query: {
+    //     name: 'afan',
+    //     age: 18,
+    //   }
+    // });
 
     // 方式4 隐式传参，不需要写state了，获取方式参考navigate的隐式传参获取方式
     // React V6中隐式传参目标刷新后不会丢失，V5中会丢失
