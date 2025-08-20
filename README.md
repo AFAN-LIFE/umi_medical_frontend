@@ -22,6 +22,9 @@ pnpm dlx create-umi@latest
 https://favicon.io/favicon-converter/
 
 # commit说明
+- 250820 配置式路由配置，以及loading组件优化
+    - 先新建config/routes.ts在里面写路由表
+    - 开启externals，修改src/loading.tsx
 
 - 250819 约定式路由配置：这种路由不是很灵活
     - 先注释config/config.ts中的路由表 
