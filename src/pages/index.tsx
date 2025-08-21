@@ -1,3 +1,6 @@
+// @就是scr的别名
+import "@/layouts/index.less"
+
 const HomePage = () => {
   return (
     <div>
