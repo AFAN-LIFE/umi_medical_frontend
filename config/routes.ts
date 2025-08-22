@@ -1,39 +1,12 @@
 const routes =  [
-    { 
-        path: "/", 
-        component: "index",  // 自动去pages目录下查找，也可以指定目录
-        titie: "首页"
+    {
+      path: '/',
+      redirect: '/home',
     },
-    { 
-        path: "/count/:name/:age", // 动态路由，下面需要再配一遍/count否则404，访问：http://localhost:3000/count/afan/18
-        component: "count",     
-        titie: "计数器"
-    },
-    { 
-        path: "/count", 
-        component: "count", 
-        titie: "计数器"
-    },
-    { 
-        path: "/user", 
-        component: "user",  
-        titie: "个人中心",
-        routes: [
-                { 
-                    path: "/user", 
-                    redirect: '/user/order'  // 重定向
-                },
-                { 
-                    path: "/user/order", 
-                    component: "user/order",  
-                    titie: "订单管理"
-                },
-                { 
-                    path: "/user/profile", 
-                    component: "user/profile",  
-                    titie: "个人想信息"
-                },
-        ]
+    {
+      name: '首页',
+      path: '/home',
+      component: './Home',
     },
     { 
         path: "*",    // 匹配不到上面就是404

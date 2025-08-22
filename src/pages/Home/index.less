@@ -1,0 +1,293 @@
+// 用户登录显示位置，好像无作用
+// .userSection {
+//   display: flex;
+//   align-items: center;
+// }
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 40px;
+  
+  h1 {
+    font-size: 48px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+  }
+}
+
+.searchSection {
+  max-width: 800px;
+  margin: 0 auto 60px;
+  
+  .tabs {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    
+    :global(.ant-tabs-nav) {
+      margin-bottom: 20px;
+      
+      &::before {
+        border-bottom: 1px solid #f0f0f0;
+      }
+    }
+    
+    :global(.ant-tabs-tab) {
+      font-size: 16px;
+      font-weight: 500;
+      padding: 12px 24px;
+      
+      &.ant-tabs-tab-active {
+        .ant-tabs-tab-btn {
+          color: #722ed1;
+          font-weight: 600;
+        }
+      }
+    }
+    
+    :global(.ant-tabs-ink-bar) {
+      background: #722ed1;
+      height: 3px;
+      border-radius: 2px;
+    }
+  }
+}
+
+.searchBar {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  
+  .searchInput {
+    flex: 1;
+    height: 56px;
+    border-radius: 12px;
+    border: 2px solid #f0f0f0;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    
+    &:hover,
+    &:focus {
+      border-color: #722ed1;
+      box-shadow: 0 0 0 2px rgba(114, 46, 209, 0.1);
+    }
+    
+    :global(.ant-input-suffix) {
+      margin-right: 12px;
+    }
+  }
+  
+  .searchIcons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    
+    .icon {
+      font-size: 18px;
+      color: #8c8c8c;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 4px;
+      border-radius: 6px;
+      
+      &:hover {
+        color: #722ed1;
+        background: rgba(114, 46, 209, 0.1);
+      }
+    }
+  }
+  
+  .searchButton {
+    height: 56px;
+    padding: 0 32px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+  }
+}
+
+.featureGrid {
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  .featureCard {
+    height: 200px;
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    :global(.ant-card-body) {
+      padding: 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+  
+  .hotBadge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    
+    :global(.ant-ribbon) {
+      font-size: 12px;
+      font-weight: 600;
+    }
+  }
+  
+  .cardContent {
+    text-align: center;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .cardIcon {
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 12px;
+    background: rgba(114, 46, 209, 0.1);
+    transition: all 0.3s ease;
+    
+    .featureCard:hover & {
+      transform: scale(1.1);
+      background: rgba(114, 46, 209, 0.2);
+    }
+  }
+  
+  .cardTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 8px 0;
+    line-height: 1.4;
+  }
+  
+  .cardDescription {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+  
+  .logo h1 {
+    font-size: 36px;
+  }
+  
+  .searchSection {
+    margin-bottom: 40px;
+    
+    .tabs {
+      padding: 16px;
+    }
+  }
+  
+  .searchBar {
+    flex-direction: column;
+    gap: 12px;
+    
+    .searchInput {
+      height: 48px;
+    }
+    
+    .searchButton {
+      height: 48px;
+      width: 100%;
+    }
+  }
+  
+  .featureGrid {
+    .featureCard {
+      height: 180px;
+      
+      :global(.ant-card-body) {
+        padding: 20px;
+      }
+    }
+    
+    .cardTitle {
+      font-size: 16px;
+    }
+    
+    .cardDescription {
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .logo h1 {
+    font-size: 28px;
+  }
+  
+  .searchSection {
+    margin-bottom: 30px;
+  }
+  
+  .featureGrid {
+    .featureCard {
+      height: 160px;
+      
+      :global(.ant-card-body) {
+        padding: 16px;
+      }
+    }
+    
+    .cardIcon {
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    
+    .cardTitle {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    
+    .cardDescription {
+      font-size: 12px;
+    }
+  }
+}

@@ -10,7 +10,7 @@ export default defineConfig({
   devtool: process.env.NODE_ENV === 'development' ? 'eval' : false,
 
   // 打包后的文件会带hash，处理浏览器缓存问题
-  hash: true,
+  hash: true, 
 
   // 配置图片的打包方式，大于10KB，单独打包成一个图片，如果小于10KB，打包Base64
   inlineLimit: 10000,
@@ -23,7 +23,7 @@ export default defineConfig({
   plugins: [], 
 
   // 配置打包后的资源的导入路径，默认是/
-  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/abc/',
+  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/electric/',
 
   // 配置网站的标题
   title: "AFAN",
@@ -32,9 +32,9 @@ export default defineConfig({
   // 默认全量引入polyfill来处理ES6+中的API兼容，也可以手动按需引入
   polyfill: {},
   // 兼容 ie11
-  targets: {
-      ie: 11,
-  },
+  // targets: {
+  //     ie: 11,
+  // },
 
   // ====================路由相关=========================
   routes,  // 配置式路由，简写不冒号了，抽出来更好，否则太长了
@@ -47,23 +47,23 @@ export default defineConfig({
   // ====================配置代理=========================
   // 好像没效果
   proxy: {
-    '/api': {
-      'target': 'https://jsonplaceholder.typicode.com/',
+    '/auth-api': {
+      'target': 'https://changtianml.com',
       'changeOrigin': true,
-      'pathRewrite': { '^/api' : '' },
-    }
+      'secure': false, // 如果目标服务器使用 HTTPS 且证书无效，可以设置为 false
+    },
   },
 
   // ====================配置webpack=========================
-  chainWebpack(memo, { env, webpack }) {
-    // memo表示现有的webpack配置，env表示环境变量，webpack对象，自己研几怎么配置
-    // // 设置 alias
-    // memo.resolve.alias.set('foo', '/tmp/to/foo');
-    // // 添加额外插件
-    // memo.plugin('hello').use(Plugin, [...args]);
-    // // 删除 Umi 内置插件
-    // memo.plugins.delete('hmr');
-  },
+  // chainWebpack(memo, { env, webpack }) {
+  //   // memo表示现有的webpack配置，env表示环境变量，webpack对象，自己研几怎么配置
+  //   // // 设置 alias
+  //   // memo.resolve.alias.set('foo', '/tmp/to/foo');
+  //   // // 添加额外插件
+  //   // memo.plugin('hello').use(Plugin, [...args]);
+  //   // // 删除 Umi 内置插件
+  //   // memo.plugins.delete('hmr');
+  // },
 
   // ====================配置额外扩展项=========================  
   extraBabelIncludes: [],  // 配置额外需要做Bable编译NPM包或目录

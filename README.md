@@ -11,37 +11,70 @@ pnpm build
 ```
 pnpm i antd qs styled-components @umijs/plugins
 ```
-
-# 新手创建
+# 项目上传
+在`config.ts`设置打包路径：
 ```
-pnpm dlx create-umi@latest
+publicPath: process.env.NODE_ENV === 'development' ? '/' : '/electric/',
+```
+上传到服务器`/usr/share/nginx/html`下
+
+# 用户加密
+基于`crpyto-js`，代码在`utils/EncryptUtils.ts`s
+```
+"crypto-js": "^4.2.0"
 ```
 
-# 其他工具
-## favicon转换
-https://favicon.io/favicon-converter/
+# 页面布局
+## 网格
+参考：https://ant.design/components/grid-cn
 
-# commit说明
-- 250820 路由跳转方式：
-    - 路径传参和接受参数
-    - navigate跳转和显示隐式传参：其中多种接受参数的方法都在这个里面
-    - history传参：有一个到config/config.ts中配置historyWithQuery的操作，感觉没必要，优先还是navigate的方法把
-    
-- 250820 配置式路由配置，以及loading组件优化
-    - 先新建config/routes.ts在里面写路由表
-    - 开启externals，修改src/loading.tsx
+Antd 的 Grid 系统将屏幕宽度分为 24 等分，每个 Col 的数值表示占据多少份。
+gutter={[24, 24]}:
+- 第一个数字 24: 列之间的水平间距（24px）
+- 第二个数字 24: 行之间的垂直间距（24px）
 
-- 250819 约定式路由配置：这种路由不是很灵活
-    - 先注释config/config.ts中的路由表 
-    - 在pages下面增加user/order.tsx和user/profile.tsx二级页面
-    - 修改layouts/index.tsx的基本页面布局，添加React的styled-components样式，增加NavLink跳转和一些页面美化
-    - 修改pages/user.tsx的基本页面布局，增加二级页面的跳转
+屏幕尺寸的适配参数：
+- xs (超小屏幕) 屏幕宽度: < 576px xs={24}: 占据24/24，即100%宽度，每行显示1个卡片，适用于：手机竖屏
+- sm (小屏幕) 屏幕宽度: ≥ 576px sm={12}: 占据12/24，即50%宽度，每行显示2个卡片 适用于：手机横屏、小平板
+- md (中屏幕) 屏幕宽度: ≥ 768px md={8}: 占据8/24，即33.33%宽度，每行显示3个卡片 适用于：平板、小笔记本
+- lg (大屏幕) 屏幕宽度: ≥ 992px lg={6}: 占据6/24，即25%宽度，每行显示4个卡片 适用于：普通桌面显示器
+- xl (超大屏幕) 屏幕宽度: ≥ 1200px xl={6}: 占据6/24，即25%宽度，每行显示4个卡片 适用于：大尺寸显示器
 
-- 250819 项目文件基本配置
-    - .env 基本环境变量，端口和地址 
-    - package.json 依赖管理
-    - config/config.ts 非运行配置，和.umirc.ts二选一
-    - public 静态资源目录，打包会进入dist，可以代码应用
-    - src/app.ts 运行时配置，可以修改路由、render方法
-    - src/layouts 全局布局，启动项目会先加载layout组件
-    - src/pages 页面级别的组件，约定式路由，但是已经被路由规则config/config.ts给覆盖；这里已经增加count.ts做了测试
+卡片数量：`每行卡片数量 = 24 / Col的数值`
+- xs={24} → 24/24 = 1个/行
+- sm={12} → 24/12 = 2个/行
+- md={8} → 24/8 = 3个/行
+- lg={6} → 24/6 = 4个/行
+- xl={4} → 24/4 = 6个/行
+
+```tsx
+<div className={styles.featureGrid}>
+    <Row gutter={[24, 24]}>
+        {featureCards.map((card) => (
+        <Col xs={24} sm={12} md={8} lg={8} xl={8} key={card.id}>
+            <Card
+            hoverable
+            className={styles.featureCard}
+            onClick={() => handleCardClick(card.path)}
+            >
+            {card.isHot && (
+                <div className={styles.hotBadge}>
+                <Badge.Ribbon text="热门" color="red" />
+                </div>
+            )}
+            <div className={styles.cardContent}>
+                <div className={styles.cardIcon}>
+                {card.icon}
+                </div>
+                <h3 className={styles.cardTitle}>{card.title}</h3>
+                <p className={styles.cardDescription}>{card.description}</p>
+            </div>
+            </Card>
+        </Col>
+        ))}
+    </Row>
+</div>
+```
+
+## 卡片
+参考：https://ant.design/components/card-cn
