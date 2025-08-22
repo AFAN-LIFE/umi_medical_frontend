@@ -18,6 +18,15 @@ publicPath: process.env.NODE_ENV === 'development' ? '/' : '/electric/',
 ```
 上传到服务器`/usr/share/nginx/html`下
 
+nginx配置
+```
+        location /electric/ {
+            add_header Cache-Control "no-cache, no-store, must-revalidate";
+            alias /usr/share/nginx/html/medical/;
+            try_files $uri $uri/ =404;
+        }
+```
+
 # 用户加密
 基于`crpyto-js`，代码在`utils/EncryptUtils.ts`s
 ```
