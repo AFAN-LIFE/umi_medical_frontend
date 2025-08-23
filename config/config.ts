@@ -43,6 +43,7 @@ export default defineConfig({
   // },
   // 让 history 带上 query。除了通过 useNavigate 进行的跳转场景，此时还需自行处理 query。
   historyWithQuery: {},  // 开启query参数传递，但是感觉query没什么特殊的哈哈
+  base: '/electric/', // 配置部署应用时的基础路径
 
   // ====================配置代理=========================
   // 好像没效果

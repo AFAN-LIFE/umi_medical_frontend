@@ -12,12 +12,17 @@ pnpm build
 pnpm i antd qs styled-components @umijs/plugins
 ```
 # 项目上传
+## 打包上传
 在`config.ts`设置打包路径：
 ```
 publicPath: process.env.NODE_ENV === 'development' ? '/' : '/electric/',
 ```
+并且配置路由的基础路径：
+```
+base: '/electric/'
+```
 上传到服务器`/usr/share/nginx/html`下
-
+## nginx配置
 nginx配置
 ```
         location /electric/ {

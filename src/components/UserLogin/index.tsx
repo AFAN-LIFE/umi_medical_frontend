@@ -49,7 +49,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
             xAuthToken: result.data.xAuthToken,
           };
           setUserInfo(userData);
-          localStorage.setItem('user_info', JSON.stringify(userData));
+          localStorage.setItem('local_user_name', result.data.xAuthToken);
           message.success('登录成功！');
           setIsLoginModalVisible(false);
           loginForm.resetFields();

@@ -6,7 +6,7 @@ const routes =  [
     {
       name: '首页',
       path: '/home',
-      component: './Home',
+      component: '@/pages/Home',
     },
     { 
         path: "*",    // 匹配不到上面就是404
