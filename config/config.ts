@@ -48,8 +48,8 @@ export default defineConfig({
   // ====================配置代理=========================
   // 好像没效果
   proxy: {
-    '/auth-api': {
-      'target': 'https://changtianml.com',
+    '/api/': {
+      'target':  process.env.NODE_ENV === 'development' ? 'http://localhost/medical-api/' : 'https://changtianml.com/medical-api/',
       'changeOrigin': true,
       'secure': false, // 如果目标服务器使用 HTTPS 且证书无效，可以设置为 false
     },

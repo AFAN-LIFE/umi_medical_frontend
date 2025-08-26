@@ -24,6 +24,7 @@ export interface UserInfo {
   deleted?: boolean;
   resourceAuthorities?: any[];
   roleAuthorities?: any[];
+  medical_token?: string;
 }
 
 interface UserLoginProps {
@@ -51,7 +52,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
         password: encryptedPassword // 使用加密后的密码
       };
       // 这里替换为实际的API调用
-      const response = await fetch('/auth-api/session', {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData),
@@ -79,6 +80,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
             deleted: result.data.deleted,
             resourceAuthorities: result.data.resourceAuthorities || [],
             roleAuthorities: result.data.roleAuthorities || [],
+            medical_token: result.data.medical_token,
           };
           setUserInfo(userData);
           // 使用工具类存储用户信息到localStorage
