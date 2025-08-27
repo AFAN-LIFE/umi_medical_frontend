@@ -21,8 +21,9 @@ publicPath: process.env.NODE_ENV === 'development' ? '/' : '/electric/',
 ```
 base: '/electric/'
 ```
-上传到服务器`/usr/share/nginx/html`下
+上传到服务器`/usr/share/nginx/html/medical`下
 ## nginx配置
+### 静态资源
 nginx配置
 ```
         location /electric/ {
@@ -31,6 +32,53 @@ nginx配置
             try_files $uri $uri/ =404;
         }
 ```
+### 动态资源
+客户端请求 → Nginx (location匹配) → upstream定义的后端服务
+- upstream：定义后端服务器组，定义一个名为 medical-api 的后端服务器集群（上游服务）。后续可以：配置多个服务器 server 192.168.1.10:8080; server 192.168.1.11:8080;健康检查：自动检测后端服务器状态；故障转移：当某个服务器宕机时自动切换到其他服务器；会话保持：配置会话粘性
+- location：定义请求路由规则，匹配特定的 URL 路径，并定义如何处理这些请求。后续可以：路由匹配：根据 URL 路径将请求导向不同的处理方式；代理配置：设置反向代理的各种参数；缓存控制：配置缓存策略；访问控制：设置权限验证
+
+前端请求：http://localhost/api/auth/login
+↓ Umi代理重写
+代理到：http://localhost/medical-api/auth/login
+↓ Nginx接收
+Nginx匹配：location /medical-api/ 
+↓ 转发到后端
+最终请求：http://localhost:25432/auth/login
+
+```
+http {
+    upstream medical-api {
+        server localhost:25432;
+    }
+    server {
+        location /medical-api/ {
+            proxy_pass http://medical-api/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+```
+
+### 其他运维
+nginx windows日志监控
+```
+Get-Content -Path D:\software\nginx-1.28.0\logs\access.log -Wait
+Get-Content -Path D:\software\nginx-1.28.0\logs\error.log -Wait
+```
+
+## 代理逻辑
+前端页面：
+- 1 用户访问前端`localhost/electric`（生产`https://www.changtianml.com/electric`）
+- 2 nginx通过反向代理的location将其转换成`D:/git_repo/umi-learn/dist/`（生产`/usr/share/nginx/html/medical`）
+
+后端交互：
+- 1 用户从前端交互访问`api`接口请求后端
+- 2 Umi通过proxy将`api`转换成`http://localhost/medical-api/`（生产`https://changtianml.com/medical-api/`）
+- 3 nginx通过反向代理的location将其转换成`http://medical-api/`
+- 4 nginx通过反向代理的upstream将其转换成`localhost:25432`
 
 # 用户加密
 基于`crpyto-js`，代码在`utils/EncryptUtils.ts`s

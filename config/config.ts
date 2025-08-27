@@ -46,14 +46,19 @@ export default defineConfig({
   base: '/electric/', // 配置部署应用时的基础路径
 
   // ====================配置代理=========================
-  // 好像没效果
-  proxy: {
-    '/api/': {
-      'target':  process.env.NODE_ENV === 'development' ? 'http://localhost/medical-api/' : 'https://changtianml.com/medical-api/',
-      'changeOrigin': true,
-      'secure': false, // 如果目标服务器使用 HTTPS 且证书无效，可以设置为 false
-    },
-  },
+  // 在没有nginx的情况下，开发环境下前端请求后端可以通过配置代理来解决跨域问题
+  // 生产环境proxy无效，只能用nginx代理
+  // proxy: {
+  //   '/api': {
+  //     'target':  process.env.NODE_ENV === 'development' ? 'http://localhost/' : 'https://changtianml.com/',
+  //     'changeOrigin': true,
+  //     'secure': false, // 如果目标服务器使用 HTTPS 且证书无效，可以设置为 false
+  //      // 关键：添加路径重写规则
+  //     'pathRewrite': {
+  //       '^/api': '/medical-api'  // 将 /api 替换为 /medical-api
+  //     },
+  //   },
+  // },
 
   // ====================配置webpack=========================
   // chainWebpack(memo, { env, webpack }) {

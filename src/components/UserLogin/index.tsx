@@ -52,7 +52,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
         password: encryptedPassword // 使用加密后的密码
       };
       // 这里替换为实际的API调用
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/medical-api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData),
