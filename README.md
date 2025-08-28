@@ -38,8 +38,7 @@ nginx配置
 - location：定义请求路由规则，匹配特定的 URL 路径，并定义如何处理这些请求。后续可以：路由匹配：根据 URL 路径将请求导向不同的处理方式；代理配置：设置反向代理的各种参数；缓存控制：配置缓存策略；访问控制：设置权限验证
 
 前端请求：http://localhost/api/auth/login
-↓ Umi代理重写
-代理到：http://localhost/medical-api/auth/login
+× 有nginx这步不需要，仅限于dev下图快，Umi代理重写直接代理到后端接口
 ↓ Nginx接收
 Nginx匹配：location /medical-api/ 
 ↓ 转发到后端
@@ -140,3 +139,22 @@ gutter={[24, 24]}:
 
 ## 卡片
 参考：https://ant.design/components/card-cn
+
+
+## CSV文件加载
+论文复现的展示页面中希望能通过csv文件展示卡片的情况，这样解耦方便维护，流程是
+- 先在`public/data`下面放置csv文件，内容如下
+```
+title,description,link,difficulty,field,date
+"U-Net医学影像分割实战","Python深度学习","https://mp.weixin.qq.com/s/vS58ppcNtE-ZvKzDgxFASQ","高级","JCR1区","2025-08-13"
+```
+- 然后编写`utils/CSVLoader`读取，依赖于
+```
+  "dependencies": {
+    "papaparse": "^5.5.3",
+  },
+  "devDependencies": {
+    "@types/papaparse": "^5.3.16",
+  }
+```
+- 最后`pages/PaperReproduction`再读取渲染即可

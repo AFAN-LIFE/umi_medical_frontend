@@ -57,10 +57,10 @@ const HomePage: React.FC = () => {
     },
     {
       id: 'collections',
-      title: '我的收藏',
-      description: '查看已经收藏的文献,自动关联PDF,云端管理',
+      title: '论文复现',
+      description: '提供基于本平台的论文复现资料',
       icon: <HeartOutlined style={{ fontSize: '24px', color: '#faad14' }} />,
-      path: '/collections',
+      path: '/paper-reproduction',
       isHot: false,
     },
     {

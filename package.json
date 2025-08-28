@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@ant-design/icons": "^4.0.0",
+    "@ant-design/pro-components": "^2.8.10",
     "@umijs/plugins": "^4.4.12",
     "antd": "^5.27.0",
     "crypto-js": "^4.2.0",
+    "papaparse": "^5.5.3",
     "qs": "^6.14.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,6 +22,7 @@
     "umi": "^4.4.12"
   },
   "devDependencies": {
+    "@types/papaparse": "^5.3.16",
     "@types/react": "^18.0.33",
     "@types/react-dom": "^18.0.11",
     "typescript": "^5.0.3"
