@@ -27,10 +27,54 @@ export interface UserInfo {
   medical_token?: string;
 }
 
+const [userInfo, setUserInfo] = useState<UserInfo | null>(() => {
+  return LocalStorageUtils.get('current_logined_user_profile');
+});
+
 interface UserLoginProps {
   onLoginSuccess?: (userInfo: UserInfo) => void;
-  onLogout?: () => void;
+  // () => void - 表示这是一个没有参数、没有返回值的函数类型
+  // 这里的?.是可选链操作符，表示如果onLogout存在则调用它
+  onLogout?: () => void;  
 }
+
+// Token过期处理函数
+const handleTokenExpired = () => {
+  message.error('登录已过期，请重新登录');
+  setUserInfo(null);
+  LocalStorageUtils.remove('current_logined_user_profile');
+  onLogout?.();
+};
+
+
+const LOCAL_STORAGE_TOKEN_EXPIRE = 'token_expire'
+
+// 添加响应拦截器
+const setupResponseInterceptor = (onTokenExpired: () => void) => {
+  const originalFetch = window.fetch;
+   
+  // 每次请求都会经过这里
+  window.fetch = async (...args) => {
+    // 先执行原始请求
+    const response = await originalFetch(...args);
+    
+    // 克隆响应以便可以多次读取
+    const clonedResponse = response.clone();
+    
+    // 检查响应中是否包含Token过期信息
+    try {
+      const data = await clonedResponse.json();
+      if (data.message === LOCAL_STORAGE_TOKEN_EXPIRE) {
+      // 4. 如果Token过期，执行处理函数
+      handleTokenExpired();
+      }
+    } catch (e) {
+      // 响应不是JSON格式，忽略错误
+    }
+    
+    return response;
+  };
+};
 
 const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
   const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
@@ -40,6 +84,53 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
     // 使用工具类获取用户信息
     return LocalStorageUtils.get('current_logined_user_profile');
   });
+
+    // Token过期处理函数
+  const handleTokenExpired = () => {
+    message.error('登录已过期，请重新登录');
+    setUserInfo(null);
+    LocalStorageUtils.remove('current_logined_user_profile');
+    onLogout?.();
+  };
+
+    // 设置响应拦截器
+  useEffect(() => {
+    setupResponseInterceptor(handleTokenExpired);
+  }, []);
+
+    // 定期验证Token的函数
+  const verifyTokenPeriodically = async () => {
+    if (!userInfo?.xAuthToken) return;
+    
+    try {
+      const response = await fetch('/medical-api/auth/verify-token', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-Auth-Token': userInfo.xAuthToken
+        },
+        body: JSON.stringify({ token: userInfo.xAuthToken }),
+      });
+      
+      const result = await response.json();
+      
+      if (!result.success && result.message === LOCAL_STORAGE_TOKEN_EXPIRE) {
+        handleTokenExpired();
+      }
+    } catch (error) {
+      console.error('Token验证失败:', error);
+    }
+  };
+
+    // 设置定期Token验证
+  useEffect(() => {
+    if (userInfo?.xAuthToken) {
+      // 每5分钟验证一次Token
+      const intervalId = setInterval(verifyTokenPeriodically, 5 * 60 * 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [userInfo?.xAuthToken]);
+
 
   const handleLogin = async (values: { username: string; password: string }) => {
     setLoading(true);
@@ -57,10 +148,10 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestData),
       });
-
+      console.log('登录响应:', response);
       if (response.ok) {
         const result = await response.json();
-        if (result.retCode === '0') {
+        if (result.success) {
           // 构建完整的用户信息对象
           const userData: UserInfo = {
             userId: result.data.userId,
@@ -91,7 +182,7 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
           loginForm.resetFields();
           onLoginSuccess?.(userData);
         } else {
-          message.error(result.retMsg || '登录失败');
+          message.error(result.message || '登录失败');
         }
       } else {
         message.error('登录请求失败');
@@ -109,6 +200,8 @@ const UserLogin: React.FC<UserLoginProps> = ({ onLoginSuccess, onLogout }) => {
     // 使用工具类移除存储的用户信息
     LocalStorageUtils.remove('current_logined_user_profile');
     message.success('已退出登录');
+    // handleLogout 负责基础的登出清理工作（必做）
+    // onLogout 让父组件有机会添加额外的登出逻辑（选做）
     onLogout?.();
   };
 

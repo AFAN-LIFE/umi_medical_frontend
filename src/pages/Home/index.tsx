@@ -19,7 +19,9 @@ import UserLogin, { UserInfo } from '@/components/UserLogin';
 const { TabPane } = Tabs;
 
 const HomePage: React.FC = () => {
+  // 文献综述生成输入框
   const [searchText, setSearchText] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // 功能卡片数据
   const featureCards = [
@@ -119,8 +121,20 @@ const HomePage: React.FC = () => {
 
   const handleSearch = () => {
     if (searchText.trim()) {
-      message.info(`搜索: ${searchText}`);
-      // 这里可以添加实际的搜索逻辑
+      setIsGenerating(true);
+      // 模拟生成过程，实际中可能是API调用
+      setTimeout(() => {
+        setIsGenerating(false);
+        // 跳转到 chat 页面并通过state传递参数
+        history.push('/chat', 
+          { 
+            searchText: searchText,
+            generatedAt: new Date().toISOString()
+          }
+        );
+      }, 1500);
+    } else {
+      message.info('请输入研究方向后再生成文献综述');
     }
   };
 
@@ -156,11 +170,9 @@ const HomePage: React.FC = () => {
       </div>
       {/* 搜索区域 */}
       <div className={styles.searchSection}>
-        <Tabs defaultActiveKey="1" className={styles.tabs}>
-          <TabPane tab="文献搜索" key="1">
             <div className={styles.searchBar}>
               <Input
-                placeholder="拖拽PDF到文本框上传/翻译"
+                placeholder="输入您的研究方向，如：肿瘤免疫治疗 文献综述"
                 value={searchText}
                 onChange={(e) => setSearchText(e.target.value)}
                 onPressEnter={handleSearch}
@@ -185,37 +197,9 @@ const HomePage: React.FC = () => {
                 onClick={handleSearch}
                 className={styles.searchButton}
               >
-                搜索 文献
+                文献综述生成
               </Button>
             </div>
-          </TabPane>
-          <TabPane tab="学术AI" key="2">
-            <div className={styles.searchBar}>
-              <Input
-                placeholder="向AI提问学术问题..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                onPressEnter={handleSearch}
-                className={styles.searchInput}
-                suffix={
-                  <div className={styles.searchIcons}>
-                    <RobotOutlined className={styles.icon} />
-                    <SearchOutlined className={styles.icon} onClick={handleSearch} />
-                    <AppstoreOutlined className={styles.icon} />
-                  </div>
-                }
-              />
-              <Button 
-                type="primary" 
-                size="large" 
-                onClick={handleSearch}
-                className={styles.searchButton}
-              >
-                提问 AI
-              </Button>
-            </div>
-          </TabPane>
-        </Tabs>
       </div>
 
       {/* 功能卡片网格 */}

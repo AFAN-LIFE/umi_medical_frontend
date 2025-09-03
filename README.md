@@ -11,6 +11,9 @@ pnpm build
 ```
 pnpm i antd qs styled-components @umijs/plugins
 ```
+## 项目调试
+打开config的devtool配置，并访问下载Chrome插件：https://react.dev/learn/react-developer-tools
+
 # 项目上传
 ## 打包上传
 在`config.ts`设置打包路径：
@@ -158,3 +161,8 @@ title,description,link,difficulty,field,date
   }
 ```
 - 最后`pages/PaperReproduction`再读取渲染即可
+
+
+# 对话功能
+
+ChatUI: https://chatui.io/

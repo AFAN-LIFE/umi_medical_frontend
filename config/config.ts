@@ -47,18 +47,17 @@ export default defineConfig({
 
   // ====================配置代理=========================
   // 在没有nginx的情况下，开发环境下前端请求后端可以通过配置代理来解决跨域问题
-  // 生产环境proxy无效，只能用nginx代理
-  // proxy: {
-  //   '/api': {
-  //     'target':  process.env.NODE_ENV === 'development' ? 'http://localhost/' : 'https://changtianml.com/',
-  //     'changeOrigin': true,
-  //     'secure': false, // 如果目标服务器使用 HTTPS 且证书无效，可以设置为 false
-  //      // 关键：添加路径重写规则
-  //     'pathRewrite': {
-  //       '^/api': '/medical-api'  // 将 /api 替换为 /medical-api
-  //     },
-  //   },
-  // },
+  // 生产环境proxy也需要配置，因为开发环境访问前端一般有端口号，比如localhost:3000
+  // 不配置访问不会通过nginx代理，而是直接访问localhost:3000/medical-api/xxx, 这样就跨域了，而且无法触发nginx的配置
+  proxy: {
+    '/medical-api': {
+      'target':  'http://localhost:25432', // 目标后端接口地址
+      'changeOrigin': true,
+      'secure': false, // 如果目标服务器使用 HTTPS 且证书无效，可以设置为 false
+       // 关键：添加路径重写规则
+      'pathRewrite': { '^/medical-api': '/' }, // 重写路径
+    },
+  },
 
   // ====================配置webpack=========================
   // chainWebpack(memo, { env, webpack }) {
